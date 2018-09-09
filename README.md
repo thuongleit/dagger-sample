@@ -54,5 +54,10 @@ class MainFragment : Fragment(), Injectable {
 abstract fun contributeMainFragment(): MainFragment
 ```
 
+# How to change logging LEVEL
+
+- In `NetworkLoggerModule` class
+- The logging LEVEL is different between `debug` and `release` Build Variants
+
 # Credit
 This project is extracted and modified from [GithubBrowserSample](https://github.com/googlesamples/android-architecture-components/tree/master/GithubBrowserSample).
