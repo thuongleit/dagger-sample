@@ -54,5 +54,22 @@ class MainFragment : Fragment(), Injectable {
 abstract fun contributeMainFragment(): MainFragment
 ```
 
+# How to add new ViewModel
+
+- Add a new viewmodel, extends from `ViewModel`
+
+```kotlin
+class MainViewModel @Inject constructor(val sample: SampleRepository) : ViewModel()
+```
+
+- Register the viewmodel to `ViewModelModule`
+
+```kotlin
+@Binds
+@IntoMap
+@ViewModelKey(MainViewModel::class)
+abstract fun bindMainViewModel(mainViewModel: MainViewModel): ViewModel
+```
+
 # Credit
 This project is extracted and modified from [GithubBrowserSample](https://github.com/googlesamples/android-architecture-components/tree/master/GithubBrowserSample).
