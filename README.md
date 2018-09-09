@@ -54,5 +54,42 @@ class MainFragment : Fragment(), Injectable {
 abstract fun contributeMainFragment(): MainFragment
 ```
 
+# How to add a new worker
+
+- Add a new worker,e.g
+
+- Add a Subcomponent for the worker
+
+```kotlin
+@Subcomponent
+interface SampleWorkerComponent: AndroidInjector<SampleWorker> {
+
+    @Subcomponent.Builder
+    abstract class Builder : AndroidInjector.Builder<SampleWorker>()
+}
+```
+
+- Register the worker and subcomponent to `WorkerModule`
+ 
+```kotlin
+@Module(subcomponents = [SampleWorkerComponent::class])
+abstract class WorkerModule {
+
+    @Binds
+    @IntoMap
+    @WorkerKey(SampleWorker::class)
+    abstract fun bindWorkerFactory(profileWorker: SampleWorkerComponent.Builder): AndroidInjector.Factory<out Worker>
+}
+```
+
+- Call inject in the worker class
+
+```kotlin
+override fun doWork(): Result {
+    AndroidWorkerInjection.inject(this)
+...
+}
+```
+
 # Credit
 This project is extracted and modified from [GithubBrowserSample](https://github.com/googlesamples/android-architecture-components/tree/master/GithubBrowserSample).
