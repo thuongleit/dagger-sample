@@ -13,6 +13,46 @@ This repository shows how to set up an Android project using [Dagger](https://go
 - DI setup with [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager/) 
 > checkout branch [dagger-work-manager](https://github.com/thuongleit/dagger-sample/tree/dagger-work-manager)
 
+# How to add new activity/fragment to DI
+
+## Activity:
+
+-  Add an activity, implements `HasSupportFragmentInjector`
+
+```kotlin
+class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
+
+    @Inject
+    lateinit var repository: SampleRepository
+
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
+
+    override fun supportFragmentInjector() = dispatchingAndroidInjector
+}
+```
+- Register the activity to AndroidInjector in `ActivityModule`
+
+```kotlin
+@ContributesAndroidInjector(modules = [FragmentBuildersModule::class])
+abstract fun contributeMainActivity(): MainActivity
+```
+
+## Fragment
+
+- Add a fragment, implements `Injectable`
+
+```kotlin
+class MainFragment : Fragment(), Injectable {
+}
+```
+
+- Register the fragment in `FragmentBuildersModule`
+
+```kotlin
+@ContributesAndroidInjector
+abstract fun contributeMainFragment(): MainFragment
+```
 
 # Credit
 This project is extracted and modified from [GithubBrowserSample](https://github.com/googlesamples/android-architecture-components/tree/master/GithubBrowserSample).
